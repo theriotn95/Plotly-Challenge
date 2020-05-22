@@ -5,11 +5,11 @@ function buildDash(sample) {
       
       var sampleFilter = metadata.filter(sample_obj => sample_obj.id == sample);
       var s_results = sampleFilter[0];
-      
+      // select requested panel
       var panel = d3.select("#sample-metadata");
   
       panel.html("");
-  
+        // have to create key pairs using forEach
       Object.entries(s_results).forEach(([key, value]) => {
         panel.append("h6").text(`${key.toUpperCase()}: ${value}`);
       });
@@ -20,7 +20,7 @@ function buildDash(sample) {
 function buildPlots(sample) {
     d3.json("samples.json").then((data) => {
       var samples = data.samples;
-      // Create a filter for selected sample
+      // create a filter for selected sample
       var sampleFilter = samples.filter(sample_obj => sample_obj.id == sample);
       var s_results = sampleFilter[0];
   
@@ -28,7 +28,7 @@ function buildPlots(sample) {
       var otu_labels = s_results.otu_labels;
       var sample_values = s_results.sample_values;
   
-      // Build the bubble chart
+      // build the bubble chart
       var bub_layout = {
         margin: { t: 0 },
         hovermode: "closest",
@@ -73,7 +73,7 @@ function buildPlots(sample) {
   function init() {
     var selector = d3.select("#selDataset");
   
-    //
+    // select options create list of samples
     d3.json("samples.json").then((data) => {
       var subj_ids = data.names;
   
@@ -83,7 +83,7 @@ function buildPlots(sample) {
           .text(sample)
           .property("value", sample);
       });
-  
+      // use first sample for initial charts
       var starter_samp = subj_ids[0];
       buildPlots(starter_samp);
       buildDash(starter_samp);
@@ -91,7 +91,7 @@ function buildPlots(sample) {
   }
   
   function optionChanged(new_subj) {
-    
+    // get a new subject sample for new selecetion
     buildPlots(new_subj);
     buildDash(new_subj);
   }
